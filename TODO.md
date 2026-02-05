@@ -1,0 +1,4 @@
+- [x] Fix input area to stay fixed at the bottom of the screen
+- [x] Adjust chat-box padding to prevent overlap with fixed input area
+- [x] Ensure logout button remains accessible
+- [x] Prevent auto-scrolling in chat when user is reading previous messages
