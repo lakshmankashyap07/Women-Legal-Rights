@@ -243,6 +243,99 @@ async function sendAudio(audioBlob) {
 }
 
 // ============================
+// 🔹 Voice Typing (Speech-to-Text)
+// ============================
+let recognition;
+let isListening = false;
+let originalInputValue = '';
+let silenceTimer;
+
+function toggleVoiceTyping() {
+  const voiceBtn = document.getElementById("voiceBtn");
+  const userInput = document.getElementById("userInput");
+
+  if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+    alert("⚠️ Speech recognition is not supported in this browser. Please use Chrome or Edge.");
+    return;
+  }
+
+  if (!recognition) {
+    recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+    recognition.continuous = true; // Allow continuous speech for longer statements
+    recognition.interimResults = true; // Show interim results for real-time feedback
+    recognition.lang = 'en-US'; // You can change this to other languages if needed
+
+    recognition.onstart = () => {
+      isListening = true;
+      originalInputValue = userInput.value; // Store original input
+      voiceBtn.textContent = "🎤 Listening...";
+      voiceBtn.style.background = "#ff0000";
+      startSilenceTimer(); // Start timer to detect silence
+    };
+
+    recognition.onresult = (event) => {
+      resetSilenceTimer(); // Reset timer on speech detection
+
+      let finalTranscript = '';
+      let interimTranscript = '';
+
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        const transcript = event.results[i][0].transcript;
+        if (event.results[i].isFinal) {
+          finalTranscript += transcript;
+        } else {
+          interimTranscript += transcript;
+        }
+      }
+
+      // Update input with original value + final transcript + interim (grayed out)
+      userInput.value = originalInputValue + (originalInputValue ? ' ' : '') + finalTranscript + interimTranscript;
+    };
+
+    recognition.onend = () => {
+      isListening = false;
+      voiceBtn.textContent = "🎤 Voice";
+      voiceBtn.style.background = "";
+      clearTimeout(silenceTimer); // Clear timer
+      // Keep the final transcript in the input
+    };
+
+    recognition.onerror = (event) => {
+      console.error("Speech recognition error:", event.error);
+      alert("⚠️ Speech recognition error: " + event.error);
+      isListening = false;
+      voiceBtn.textContent = "🎤 Voice";
+      voiceBtn.style.background = "";
+      clearTimeout(silenceTimer);
+    };
+  }
+
+  if (isListening) {
+    recognition.stop();
+  } else {
+    recognition.start();
+  }
+}
+
+function startSilenceTimer() {
+  clearTimeout(silenceTimer); // Clear any existing timer
+  silenceTimer = setTimeout(() => {
+    if (isListening) {
+      recognition.stop(); // Stop recognition after 2 seconds of silence
+    }
+  }, 2000); // 2 seconds of silence
+}
+
+function resetSilenceTimer() {
+  clearTimeout(silenceTimer);
+  silenceTimer = setTimeout(() => {
+    if (isListening) {
+      recognition.stop(); // Stop recognition after 2 seconds of silence
+    }
+  }, 2000);
+}
+
+// ============================
 // 🔹 File Upload
 // ============================
 document.getElementById("fileInput").addEventListener("change", function (event) {

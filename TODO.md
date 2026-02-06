@@ -1,4 +1,5 @@
-- [x] Fix input area to stay fixed at the bottom of the screen
-- [x] Adjust chat-box padding to prevent overlap with fixed input area
-- [x] Ensure logout button remains accessible
-- [x] Prevent auto-scrolling in chat when user is reading previous messages
+- [x] Add voice typing button (🎤) next to the text input in public/index.html
+- [x] Implement speech recognition logic in public/script.js to start/stop listening and transcribe speech to text
+- [x] Add basic styling for the voice typing button in public/style.css if needed
+- [x] Test the voice typing functionality in the browser
+- [x] Ensure microphone permissions are handled

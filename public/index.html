@@ -44,6 +44,7 @@
   <div class="input-area" style="display: none;">
     <input type="text" id="userInput" placeholder="Ask about your rights..." onkeypress="if(event.key==='Enter') sendMessage()">
     <button onclick="sendMessage()">Send</button>
+    <button id="voiceBtn" onclick="toggleVoiceTyping()">🎤 Voice</button>
     <button class="logout-btn" onclick="showSection('loginPage')">Logout</button>
     <!-- <button id="recordBtn" onclick="toggleRecording()">🎤 Record</button>
     <input type="file" id="fileInput" accept="image/*,audio/*,video/*,application/pdf" style="display: none;">

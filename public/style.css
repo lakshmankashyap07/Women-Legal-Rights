@@ -167,6 +167,14 @@ body {
   background: #e6c200;
 }
 
+.input-area #voiceBtn {
+  background: #ffd700;
+}
+
+.input-area #voiceBtn:hover {
+  background: #e6c200;
+}
+
 /* 🚪 Logout Button */
 .logout-btn {
   margin: 10px;
